@@ -11,6 +11,37 @@ something about it.
 It prevents code that has debug statements included from being deployed by
 Capistrano, along with a message about what was found and where to find it.
 
+Example:
+
+```
+    triggering after callbacks for `deploy:finalize_update'
+  * 2013-11-05 16:38:44 executing `deploy:find_ruby_breakpoints'
+  * executing "find /home/deploy/app/releases/20131105233842 -name \"*.rb\" -exec grep -Hn --regex \"[debugger|binding\\.pry]\" {} \\;"
+    servers: ["server.example.org"]
+    [server.example.org] executing command
+    command finished in 621ms
+
+*** Ruby debugger breakpoint found in deployed code. Deploy halted. ***
+
+There was code found that contains debugging breakpoints:
+
+  /testfile.rb:3:require 'ruby-debug'; debugger
+
+Please remove the code, commit the change and try your deploy again.
+If you feel you have reached this message in error, please consult the
+documentation to learn how to exclude certain files, or how to tune the
+detection parameters. To override, set the 'IGNORE_RUBY_BREAKPOINTS'
+ variable to true:
+
+  $ IGNORE_RUBY_BREAKPOINTS=true cap <environment> deploy
+
+*** [deploy:update_code] rolling back
+  * executing "rm -rf /home/deploy/app/releases/20131105233842; true"
+    servers: ["server.example.org"]
+    [server.example.org] executing command
+    command finished in 159ms
+```
+
 ## Why?
 
 Because even the rockstar-iest of ninjas sometimes forgets to remove a 'debug'.
