@@ -156,7 +156,7 @@ To first find the files, the gem executes a grep() of the release path to get
 used by default is:
 
 ```
-find #{release_path} -name \"*.rb\" -exec grep -Hn --regex "[debugger|binding\.pry]" {} \\;
+find #{release_path} -name "*.rb" -exec grep -Hn --regex "[debugger|binding\.pry]" {} \\;
 ```
 
 A find() and grep() is used instead of a recursive grep because I have no way
