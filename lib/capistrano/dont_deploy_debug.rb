@@ -83,10 +83,10 @@ configuration.load do
             "\n"
           ]
           abort(message.join("\n"))
-        else
-          abort('done')
         end
       end
+
+      abort("You're testing. I'm stopping now.") if ENV['TESTING_DDD']
     end
   end
 end
