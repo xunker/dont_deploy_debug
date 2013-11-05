@@ -49,11 +49,10 @@ Because even the rockstar-iest of ninjas sometimes forget to remove a 'debug'.
 ## How?
 
 It's a gem that hooks in to your Capistrano deploy process. After the code is
-updates out on the server, but before it's made "live", the gem scans the
-release path for ruby source files that have "debug" statements in them.
-
-If any are found, the deploy is halted and rolled back, and a list of the
-offending files is displayed to the user.
+updated on the server, but before it's made "live", the gem scans the release
+path for ruby source files that have "debug" statements in them. If any are
+found, the deploy is halted and rolled back, and a list of the offending files
+is displayed to the user.
 
 By default, the gem looks for statements in `*.rb` that are like:
 
@@ -68,7 +67,7 @@ debugger;
 binding.pry
 ```
 
-The gem is will ignore `test/*`, `spec/*`, `features/*` and `config/deploy.rb`.
+The gem will ignore `test/*`, `spec/*`, `features/*` and `config/deploy.rb`.
 
 ## Ruby only?
 
