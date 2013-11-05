@@ -38,10 +38,11 @@ configuration.load do
   set :ruby_breakpoint_patterns, [
     /require [\'\"]ruby-debug[\'\"][;\n]\s*debugger/,
     /^\s*debugger[;\n]/,
-    /^\s*debugger\s*$/
+    /^\s*debugger\s*$/,
+    /\bbinding\.pry\b/
   ]
 
-  set :ruby_breakpoint_trigger, 'debugger'
+  set :ruby_breakpoint_trigger, '--regex "[debugger|binding\.pry]"'
 
   set :ruby_breakpoint_grep_command, Proc.new { "find #{release_path} -name \"*.rb\" -exec grep -Hn #{fetch(:ruby_breakpoint_trigger)} {} \\;" }
 
@@ -82,6 +83,8 @@ configuration.load do
             "\n"
           ]
           abort(message.join("\n"))
+        else
+          abort('done')
         end
       end
     end
