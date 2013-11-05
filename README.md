@@ -44,7 +44,7 @@ this check, set the 'IGNORE_RUBY_BREAKPOINTS' variable to true:
 
 ## Why?
 
-Because even the rockstar-iest of ninjas sometimes forgets to remove a 'debug'.
+Because even the rockstar-iest of ninjas sometimes forget to remove a 'debug'.
 
 ## How?
 
@@ -55,20 +55,20 @@ release path for ruby source files that have "debug" statements in them.
 If any are found, the deploy is halted and rolled back, and a list of the
 offending files is displayed to the user.
 
-By default, the gem executes looks for statements in *.rb that are like:
+By default, the gem looks for statements in `*.rb` that are like:
 
 ```ruby
-  require 'ruby-debug'; debugger
+require 'ruby-debug'; debugger
 
-  require 'ruby-debug'
-  debugger
+require 'ruby-debug'
+debugger
 
-  debugger;
+debugger;
 
-  binding.pry
+binding.pry
 ```
 
-The gem is will ignore test/*, spec/*, features/* and deploy.rb.
+The gem is will ignore `test/*`, `spec/*`, `features/*` and `config/deploy.rb`.
 
 ## Ruby only?
 
@@ -89,6 +89,8 @@ Then, add the following to your Capistrano `deploy.rb`:
 
   require 'capistrano/dont_deploy_debug'
 
+For basic usage, this is all that is required.
+
 ## Configuration
 
 ### Enable or disable the check
@@ -98,30 +100,31 @@ be set programmatically by altering the 'skip_ruby_breakpoint_check' setting
 in your deloy.rb file:
 
 ```ruby
-  # turn off for all
-  set :skip_ruby_breakpoint_check, true
+# turn off for all
+set :skip_ruby_breakpoint_check, true
 
-  # skip on stage
-  set :skip_ruby_breakpoint_check, (fetch(:rails_env) == 'stage')
+# skip on stage
+set :skip_ruby_breakpoint_check, (fetch(:rails_env) == 'stage')
 
-  # on for everyone (default)
-  set :skip_ruby_breakpoint_check, false
+# on for everyone (default)
+set :skip_ruby_breakpoint_check, false
 ```
 
 ### Files to exclude from check
 
-By default, test/*, spec/*, features/* and config/deploy.rb are ignored. You
-can modify this behaviour by changing the 'exclude_from_ruby_breakpoint_check'
-setting in your deploy.rb and adding or removing regular expressions: 
+By default, `test/*`, `spec/*`, `features/*` and `config/deploy.rb` are
+ignored. You can modify this behaviour by changing the
+'exclude_from_ruby_breakpoint_check' setting in your deploy.rb and adding or
+removing regular expressions:
 
 ```ruby
-  set :exclude_from_ruby_breakpoint_check, [
-    /^\.\/config\/deploy\.rb$/,
-    /^\.\/spec\//,
-    /^\.\/test\//,
-    /^\.\/features\//,
-    /^\.\/something_else_here\//,
-  ]
+set :exclude_from_ruby_breakpoint_check, [
+  /^\.\/config\/deploy\.rb$/,
+  /^\.\/spec\//,
+  /^\.\/test\//,
+  /^\.\/features\//,
+  /^\.\/something_else_here\//,
+]
 ```
 
 ### Breakpoint patterns
@@ -129,32 +132,32 @@ setting in your deploy.rb and adding or removing regular expressions:
 By default, the gem will look for variations of:
 
 ```ruby
-  require 'ruby-debug'; debugger
+require 'ruby-debug'; debugger
 
-  binding.pry
+binding.pry
 ```
 
 This can be changed by altering the "ruby_breakpoint_patterns" setting in your
-deploy.rb and adding or remving regular expressions:
+`deploy.rb` and adding or removing regular expressions:
 
 ```ruby
-  set :ruby_breakpoint_patterns, [
-    /require [\'\"]ruby-debug[\'\"][;\n]\s*debugger/,
-    /^\s*debugger[;\n]/,
-    /^\s*debugger\s*$/,
-    /\bbinding\.pry\b/,
-    /some_other_debugger/
-  ]
+set :ruby_breakpoint_patterns, [
+  /require [\'\"]ruby-debug[\'\"][;\n]\s*debugger/,
+  /^\s*debugger[;\n]/,
+  /^\s*debugger\s*$/,
+  /\bbinding\.pry\b/,
+  /some_other_debugger/
+]
 ```
 
 ### Server-side grep command
 
-To first find the files, the gem executes a `grep` of the release path to get
+To first find the files, the gem executes a grep() of the release path to get
 "coarse" list of files and then lets ruby do the actual check. The command
 used by default is:
 
 ```
-  find #{release_path} -name \"*.rb\" -exec grep -Hn --regex "[debugger|binding\.pry]" {} \\;
+find #{release_path} -name \"*.rb\" -exec grep -Hn --regex "[debugger|binding\.pry]" {} \\;
 ```
 
 A find() and grep() is used instead of a recursive grep because I have no way
@@ -164,20 +167,20 @@ You can change this command in your `deploy.rb` with the
 "ruby_breakpoint_grep_command" setting:
 
 ```ruby
-  # default value is:
-  #   Proc.new { "find #{release_path} -name \"*.rb\" -exec grep -Hn #{fetch(:ruby_breakpoint_trigger)} {} \\;" }
+# default value is:
+#   Proc.new { "find #{release_path} -name \"*.rb\" -exec grep -Hn #{fetch(:ruby_breakpoint_trigger)} {} \\;" }
 
-  # pass it a Proc object so we can read release_path and other variables
-  # it MUST return a string
-  set :ruby_breakpoint_grep_command, Proc.new { "some better grep here" }
+# pass it a Proc object so we can read release_path and other variables
+# It MUST return a string
+set :ruby_breakpoint_grep_command, Proc.new { "some better grep here" }
 ```
 
 If you only want to change the pattern that grep() uses, you can set
 "ruby_breakpoint_trigger" instead:
 
 ```ruby
-  # default value is '--regex "[debugger|binding\.pry]"'
-  set :ruby_breakpoint_trigger, "some_other_pattern"
+# default value is '--regex "[debugger|binding\.pry]"'
+set :ruby_breakpoint_trigger, "some_other_pattern"
 ```
 
 ### Skipping check from command line
@@ -186,7 +189,7 @@ Finally, if you just want to deploy the damn'ed thing and skip the check
 temporarily, you can set the "IGNORE_RUBY_BREAKPOINTS" shell variable:
 
 ```
-  IGNORE_RUBY_BREAKPOINTS=true cap <environment> deploy
+$ IGNORE_RUBY_BREAKPOINTS=true cap <environment> deploy
 ```
 
 ## Caveats
