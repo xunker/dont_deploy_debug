@@ -28,10 +28,10 @@ There was code found that contains debugging breakpoints:
   /testfile.rb:3:require 'ruby-debug'; debugger
 
 Please remove the code, commit the change and try your deploy again.
-If you feel you have reached this message in error, please consult the
-documentation to learn how to exclude certain files, or how to tune the
-detection parameters. To override, set the 'IGNORE_RUBY_BREAKPOINTS'
- variable to true:
+If you feel you have reached this message in error, please consult
+https://github.com/xunker/dont_deploy_debug to learn how to exclude
+certain files, or how to tune the detection parameters. To override
+this check, set the 'IGNORE_RUBY_BREAKPOINTS' variable to true:
 
   $ IGNORE_RUBY_BREAKPOINTS=true cap <environment> deploy
 
