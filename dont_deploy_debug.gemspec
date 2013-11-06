@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "dont_deploy_debug"
-  spec.version       = "0.1.1"
+  spec.version       = "0.1.2"
   spec.authors       = ["Matthew Nielsen"]
   spec.email         = ["xunker@pyxidis.org"]
   spec.description   = %q{Don't allow a capistrano deploy if code contains ruby debug statements}

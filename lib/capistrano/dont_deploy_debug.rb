@@ -52,7 +52,7 @@ configuration.load do
 
   namespace :deploy do
     task :find_ruby_breakpoints do
-      if fetch(:skip_ruby_breakpoint_check) || ENV['IGNORE_RUBY_BREAKPOINTS'].to_s != "true"
+      unless fetch(:skip_ruby_breakpoint_check) || ENV['IGNORE_RUBY_BREAKPOINTS'].to_s == "true"
         files = capture(fetch(:ruby_breakpoint_grep_command)).to_s.split("\n")
         found = []
         files.each do |f|
