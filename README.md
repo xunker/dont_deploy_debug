@@ -78,15 +78,22 @@ any language where the source was parsable on the deployment server.
 
 Add this line to your application's Gemfile:
 
-  gem 'dont_deploy_debug', :require =>  false
+```ruby
+# ":require => false" is important!  
+gem 'dont_deploy_debug', :require =>  false
+```
 
 Or from the command line if you aren't using bunder:
 
-  $ gem install dont_deploy_debug
+```
+$ gem install dont_deploy_debug
+```
 
 Then, add the following to your Capistrano `deploy.rb`:
 
-  require 'capistrano/dont_deploy_debug'
+```
+require 'capistrano/dont_deploy_debug'
+```
 
 For basic usage, this is all that is required.
 
