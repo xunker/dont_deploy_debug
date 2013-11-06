@@ -16,7 +16,7 @@ Example:
 ```
     triggering after callbacks for `deploy:finalize_update'
   * 2013-11-05 16:38:44 executing `deploy:find_ruby_breakpoints'
-  * executing "find /home/deploy/app/releases/20131105233842 -name \"*.rb\" -exec grep -Hn --regex \"[debugger|binding\\.pry]\" {} \\;"
+  * executing "find /home/deploy/app/releases/20131105233842 -name \"*.rb\" -exec grep -Hn 'debugger\|binding.pry' {} \\;"
     servers: ["server.example.org"]
     [server.example.org] executing command
     command finished in 621ms
@@ -163,7 +163,7 @@ To first find the files, the gem executes a grep() of the release path to get
 used by default is:
 
 ```
-find #{release_path} -name "*.rb" -exec grep -Hn --regex "[debugger|binding\.pry]" {} \\;
+find #{release_path} -name "*.rb" -exec grep -Hn 'debugger\|binding.pry' {} \;
 ```
 
 A find() and grep() is used instead of a recursive grep because I have no way
@@ -185,8 +185,9 @@ If you only want to change the pattern that grep() uses, you can set
 "ruby_breakpoint_trigger" instead:
 
 ```ruby
-# default value is '--regex "[debugger|binding\.pry]"'
-set :ruby_breakpoint_trigger, "some_other_pattern"
+# default value is " 'debugger\|binding.pry' "
+# note the single quotes!
+set :ruby_breakpoint_trigger, " 'some_other_pattern' "
 ```
 
 ### Skipping check from command line
