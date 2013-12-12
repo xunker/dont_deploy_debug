@@ -206,3 +206,7 @@ but I'm the only one so far. I know it works on Redhat linux and it will likely
 work in most linuxes. It *should* work on any BSD system, but YMMV.
 
 If you find a case where it doesn't work please let me know.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/xunker/dont_deploy_debug/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
