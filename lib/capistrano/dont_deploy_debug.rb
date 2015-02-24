@@ -14,7 +14,7 @@ module Capistrano
     def exclude_from_ruby_breakpint_check?(file_path)
       fetch(:exclude_from_ruby_breakpoint_check).each do |pattern|
         # change `./` prefix  to `/' if present, then check for match.
-        if if file_path.sub(/^\.\//, '/') =~ pattern
+        if file_path.sub(/^\.\//, '/') =~ pattern
           puts '*'*10
           puts file_path.inspect
           puts file_path.sub(/^\.\//, '/').inspect
