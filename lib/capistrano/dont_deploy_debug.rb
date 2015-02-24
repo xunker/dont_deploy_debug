@@ -13,7 +13,8 @@ module Capistrano
 
     def exclude_from_ruby_breakpint_check?(file_path)
       fetch(:exclude_from_ruby_breakpoint_check).each do |pattern|
-        return true if file_path =~ pattern
+        # remove `./` prefix that may be present, then check for match
+        return true if file_path.sub(/^\.\//,'') =~ pattern
       end
       false
     end
@@ -29,10 +30,10 @@ configuration = Capistrano::Configuration.respond_to?(:instance) ?
 configuration.load do
 
   set :exclude_from_ruby_breakpoint_check, [
-    /^\.\/config\/deploy\.rb$/,
-    /^\.\/spec\//,
-    /^\.\/test\//,
-    /^\.\/features\//
+    /^config\/deploy\.rb$/,
+    /^spec\//,
+    /^test\//,
+    /^features\//
   ]
 
   set :ruby_breakpoint_patterns, [

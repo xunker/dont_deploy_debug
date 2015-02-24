@@ -8,8 +8,12 @@ something about it.
 
 ## What?
 
-It prevents code that has debug statements included from being deployed by
-Capistrano, along with a message about what was found and where to find it.
+*DontDeployDebug* is a Capistrano plugin that halts the deploy if finds
+debugging statement in your code.
+
+It's only been tested with Capistrano 2. It requires the deploy server (e.g.
+server to which the code is being deployed) to have UNIX-style `find(1)` and
+`grep(1)` commands available in the deloy users path.
 
 Example:
 
@@ -125,11 +129,11 @@ removing regular expressions:
 
 ```ruby
 set :exclude_from_ruby_breakpoint_check, [
-  /^\.\/config\/deploy\.rb$/,
-  /^\.\/spec\//,
-  /^\.\/test\//,
-  /^\.\/features\//,
-  /^\.\/something_else_here\//,
+  /^config\/deploy\.rb$/,
+  /^spec\//,
+  /^test\//,
+  /^features\//,
+  /^something_else_here\//,
 ]
 ```
 
@@ -156,18 +160,18 @@ set :ruby_breakpoint_patterns, [
 ]
 ```
 
-### Server-side grep command
+### Server-side `find` and `grep` command
 
-To first find the files, the gem executes a grep() of the release path to get
-"coarse" list of files and then lets ruby do the actual check. The command
+To first find the files, the gem executes a `find` of the release path to get
+"coarse" list of files and then lets `grep` do the actual check. The command
 used by default is:
 
 ```
 find #{release_path} -name "*.rb" -exec grep -Hn 'debugger\|binding.pry' {} \;
 ```
 
-A find() and grep() is used instead of a recursive grep because I have no way
-of knowing if you are deploying to system with BSD, SYSV or GNU style tools.
+A `find` with `grep` is used instead of a recursive `grep` for better
+compatibility with non-GNU `grep` found some systems.
 
 You can change this command in your `deploy.rb` with the
 "ruby_breakpoint_grep_command" setting:
@@ -202,11 +206,8 @@ $ IGNORE_RUBY_BREAKPOINTS=true cap <environment> deploy
 ## Caveats
 
 This gem has not been throughly tested in any way. Like seriously. I use it,
-but I'm the only one so far. I know it works on Redhat linux and it will likely
-work in most linuxes. It *should* work on any BSD system, but YMMV.
+but I'm the only one so far. I've used it on Redhat and Debian derived systems,
+and it will likely work in most linuxes. It *should* work on any BSD system,
+but YMMV.
 
 If you find a case where it doesn't work please let me know.
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/xunker/dont_deploy_debug/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
