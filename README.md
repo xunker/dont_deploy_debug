@@ -129,13 +129,15 @@ removing regular expressions:
 
 ```ruby
 set :exclude_from_ruby_breakpoint_check, [
-  /^config\/deploy\.rb$/,
-  /^spec\//,
-  /^test\//,
-  /^features\//,
-  /^something_else_here\//,
+  /^\/config\/deploy\.rb$/,
+  /^\/spec\//,
+  /^\/test\//,
+  /^\/features\//,
+  /^\/something_else_here\//,
 ]
 ```
+
+Paths are relative from `release_path` and are prefixed with a `/` (slash).
 
 ### Breakpoint patterns
 
@@ -202,6 +204,11 @@ temporarily, you can set the "IGNORE_RUBY_BREAKPOINTS" shell variable:
 ```
 $ IGNORE_RUBY_BREAKPOINTS=true cap <environment> deploy
 ```
+
+## TODO
+
+  * Capistrano 3 compatibility
+  * Test with `capistrano-spec` (https://github.com/technicalpickles/capistrano-spec)
 
 ## Caveats
 
